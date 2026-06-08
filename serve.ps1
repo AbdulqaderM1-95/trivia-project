@@ -18,10 +18,10 @@ $mime = @{
 while ($listener.IsListening) {
   $ctx  = $listener.GetContext()
   $rel  = $ctx.Request.Url.LocalPath.TrimStart('/')
-  if ($rel -eq '' -or $rel -eq '/') { $rel = 'harry-potter-trivia.html' }
+  if ($rel -eq '' -or $rel -eq '/') { $rel = 'index.html' }
   $file = Join-Path $root $rel
   if (!(Test-Path $file) -or (Test-Path $file -PathType Container)) {
-    $file = Join-Path $root 'harry-potter-trivia.html'
+    $file = Join-Path $root 'index.html'
   }
   $ext   = [IO.Path]::GetExtension($file).ToLower()
   $ctype = if ($mime.ContainsKey($ext)) { $mime[$ext] } else { 'application/octet-stream' }
