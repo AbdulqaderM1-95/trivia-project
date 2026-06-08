@@ -1,0 +1,1699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>☠ Tom Riddle's Test ☠</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Creepster&display=swap" rel="stylesheet">
+  <style>
+
+    /* ── WAND CURSOR ────────────────────────────────────────── */
+    * {
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M 7.1 29.1 L 2.9 24.9 L 22.9 4.9 L 27.1 9.1 Z' fill='white'/%3E%3Ccircle cx='25' cy='7' r='5' fill='%2339FF14'/%3E%3Ccircle cx='25' cy='7' r='2' fill='white'/%3E%3C/svg%3E") 5 27, auto;
+      box-sizing: border-box;
+    }
+
+    /* ── ROOT THEME ─────────────────────────────────────────── */
+    :root {
+      --purple:     #4a0072;
+      --purple-mid: #6b21a8;
+      --purple-lite: #a855f7;
+      --bg1:        #06000f;
+      --bg2:        #0e0020;
+      --skull-green:#39FF14;
+      --skull-dim:  #1a7a09;
+      --card-bg:    rgba(40,0,70,0.65);
+      --border:     rgba(168,85,247,0.55);
+      --glow:       rgba(107,33,168,0.5);
+      --green-glow: rgba(57,255,20,0.35);
+      --text:       #e8d5ff;
+      --text-dim:   #b899d4;
+    }
+
+    /* ── BODY ───────────────────────────────────────────────── */
+    body {
+      margin:0; padding:0;
+      min-height:100vh;
+      background: radial-gradient(ellipse at 50% 0%, var(--bg2) 0%, var(--bg1) 75%);
+      font-family: 'Kalam', cursive;
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ── FLOATING SKULLS ────────────────────────────────────── */
+    #particles {
+      position:fixed; top:0; left:0; width:100%; height:100%;
+      pointer-events:none; z-index:0;
+    }
+    .skull-particle {
+      position:absolute;
+      font-size: var(--sz, 1rem);
+      opacity:0;
+      color: var(--skull-green);
+      filter: drop-shadow(0 0 4px var(--skull-dim));
+      animation: floatSkull var(--d,8s) ease-in-out var(--delay,0s) infinite;
+    }
+    @keyframes floatSkull {
+      0%   { opacity:0; transform: translateY(0) rotate(0deg) scale(0.8); }
+      15%  { opacity:0.55; }
+      85%  { opacity:0.35; }
+      100% { opacity:0; transform: translateY(-60px) rotate(20deg) scale(1); }
+    }
+
+    /* ── DARK MARK WATERMARK ───────────────────────────────── */
+    #dark-mark {
+      position:fixed; bottom:-60px; right:-60px;
+      width:340px; height:340px;
+      opacity:0.055;
+      pointer-events:none; z-index:0;
+    }
+
+    /* ── SCREENS ────────────────────────────────────────────── */
+    .screen { display:none; position:relative; z-index:1; }
+    .screen.active {
+      display:flex; flex-direction:column;
+      align-items:center; justify-content:center;
+      min-height:100vh; padding:2rem 1rem;
+    }
+
+    /* ── CARD ───────────────────────────────────────────────── */
+    .card {
+      background: var(--card-bg);
+      border: 2px solid var(--border);
+      border-radius:16px;
+      padding:2.5rem 3rem;
+      max-width:620px; width:100%;
+      box-shadow: 0 0 50px var(--glow), inset 0 0 80px rgba(0,0,0,0.4);
+      backdrop-filter: blur(8px);
+      position:relative; overflow:hidden;
+    }
+    .card::before {
+      content:'';
+      position:absolute; top:0; left:0; right:0; height:3px;
+      background: linear-gradient(90deg, transparent, var(--skull-green), transparent);
+    }
+    .card::after {
+      content:'';
+      position:absolute; bottom:0; left:0; right:0; height:2px;
+      background: linear-gradient(90deg, transparent, var(--purple-lite), transparent);
+    }
+
+    /* ── HEADING ────────────────────────────────────────────── */
+    h1 {
+      font-family: 'Creepster', cursive;
+      font-size: clamp(1.8rem, 6vw, 3.2rem);
+      color: var(--skull-green);
+      text-align:center;
+      margin:0 0 0.3rem;
+      text-shadow: 0 0 20px var(--green-glow), 0 0 40px var(--green-glow), 0 2px 4px #000;
+      letter-spacing:3px;
+    }
+    h2 {
+      font-family: 'Creepster', cursive;
+      font-size: clamp(1.2rem, 3.5vw, 2rem);
+      color: var(--skull-green);
+      text-align:center;
+      margin:0 0 1.2rem;
+      text-shadow: 0 0 15px var(--green-glow);
+      letter-spacing:2px;
+    }
+    .subtitle {
+      font-family: 'Kalam', cursive;
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      color: var(--text-dim);
+      text-align:center;
+      margin-bottom:1.5rem;
+    }
+
+    /* ── DARK MARK SVG INLINE ───────────────────────────────── */
+    .mark-deco {
+      display:flex; justify-content:center;
+      margin:0.6rem 0 1.2rem;
+    }
+    .mark-deco svg { width:70px; height:70px; }
+
+    /* ── INPUT ──────────────────────────────────────────────── */
+    .input-group { margin-bottom:1.5rem; }
+    .input-group label {
+      display:block;
+      font-family:'Kalam', cursive;
+      font-size:1.15rem;
+      color:var(--text-dim);
+      margin-bottom:0.5rem;
+    }
+    input[type="text"] {
+      width:100%;
+      padding:0.85rem 1.2rem;
+      background:rgba(57,255,20,0.05);
+      border:1px solid var(--border);
+      border-radius:8px;
+      color:var(--text);
+      font-family:'Kalam', cursive;
+      font-size:1.15rem;
+      outline:none;
+      transition:border-color 0.3s, box-shadow 0.3s;
+    }
+    input[type="text"]:focus {
+      border-color:var(--skull-green);
+      box-shadow:0 0 14px var(--green-glow);
+    }
+    input[type="text"]::placeholder { color:rgba(232,213,255,0.3); }
+
+    /* ── BUTTON ─────────────────────────────────────────────── */
+    .btn {
+      display:inline-block;
+      padding:0.85rem 2rem;
+      background:linear-gradient(135deg, #2d0050, #4a0072);
+      border:2px solid var(--skull-green);
+      border-radius:8px;
+      color:var(--skull-green);
+      font-family:'Kalam', cursive;
+      font-size:1.05rem;
+      font-weight:700;
+      letter-spacing:1px;
+      transition:all 0.25s;
+      box-shadow:0 4px 18px rgba(0,0,0,0.5), 0 0 12px var(--green-glow);
+      text-shadow:0 0 8px var(--green-glow);
+    }
+    .btn:hover {
+      transform:translateY(-3px);
+      box-shadow:0 8px 30px var(--green-glow), 0 0 24px var(--green-glow);
+      background:linear-gradient(135deg, #3d0068, #6b21a8);
+    }
+    .btn:active { transform:translateY(1px); }
+
+    /* ── HOUSE GRID ─────────────────────────────────────────── */
+    .houses-grid {
+      display:grid; grid-template-columns:1fr 1fr;
+      gap:1rem; margin-top:1rem;
+    }
+    .house-btn {
+      padding:1.1rem 0.7rem;
+      border-radius:12px;
+      border:2px solid rgba(57,255,20,0.3);
+      text-align:center;
+      background:rgba(57,255,20,0.04);
+      transition:all 0.3s;
+      position:relative; overflow:hidden;
+    }
+    .house-btn:hover {
+      transform:translateY(-4px) scale(1.04);
+      border-color:var(--skull-green);
+      background:rgba(57,255,20,0.1);
+      box-shadow:0 8px 28px var(--green-glow);
+    }
+    .house-icon  { font-size:2rem; display:block; margin-bottom:0.4rem; }
+    .house-name  {
+      font-family:'Creepster', cursive;
+      font-size:1rem; letter-spacing:1px;
+      color:var(--skull-green); display:block;
+    }
+    .house-motto {
+      font-family:'Kalam', cursive;
+      font-size:0.82rem; color:var(--text-dim);
+      display:block; margin-top:0.2rem;
+    }
+
+    /* ── QUIZ SCREEN ────────────────────────────────────────── */
+    #screen-quiz { padding:1.5rem 1rem; }
+    #screen-quiz .card { max-width:700px; }
+
+    .quiz-header {
+      display:flex; justify-content:space-between;
+      align-items:center; margin-bottom:1.2rem;
+      flex-wrap:wrap; gap:0.5rem;
+    }
+    .player-info {
+      font-family:'Kalam', cursive;
+      font-size:1.05rem; color:var(--text-dim);
+    }
+    .score-display {
+      font-family:'Kalam', cursive; font-weight:700;
+      font-size:1rem; color:var(--skull-green);
+      background:rgba(0,0,0,0.35);
+      padding:0.3rem 1rem; border-radius:20px;
+      border:1px solid rgba(57,255,20,0.4);
+      text-shadow:0 0 8px var(--green-glow);
+    }
+
+    /* Progress */
+    .progress-wrap {
+      background:rgba(0,0,0,0.5);
+      border-radius:20px; height:7px;
+      margin-bottom:0.4rem; overflow:hidden;
+      border:1px solid rgba(57,255,20,0.25);
+    }
+    .progress-bar {
+      height:100%;
+      background:linear-gradient(90deg, #2d0050, var(--skull-green));
+      border-radius:20px;
+      transition:width 0.5s ease;
+      box-shadow:0 0 10px var(--green-glow);
+    }
+    .quiz-meta {
+      display:flex; justify-content:space-between; align-items:center;
+      margin-bottom:1rem;
+    }
+    .progress-label {
+      font-size:0.85rem; color:var(--text-dim);
+    }
+
+    /* Countdown timer ring */
+    .timer-wrap {
+      width:54px; height:54px; border-radius:50%;
+      background: conic-gradient(#39FF14 100%, rgba(255,255,255,0.07) 0);
+      display:flex; align-items:center; justify-content:center;
+      box-shadow:0 0 14px rgba(57,255,20,0.4);
+      flex-shrink:0;
+      transition:box-shadow 0.4s;
+    }
+    .timer-inner {
+      width:40px; height:40px; border-radius:50%;
+      background:#06000f;
+      display:flex; align-items:center; justify-content:center;
+      font-family:'Kalam', cursive;
+      font-size:1.05rem; font-weight:700;
+      color:#39FF14;
+      text-shadow:0 0 8px rgba(57,255,20,0.6);
+      transition:color 0.4s, text-shadow 0.4s;
+    }
+
+    /* Snake-bordered question box */
+    .question-wrap {
+      position:relative;
+      margin:0.5rem 0 1.8rem;
+    }
+    .snake-top, .snake-bottom {
+      display:block; text-align:center;
+      font-size:1.2rem; line-height:1;
+      color:var(--skull-green);
+      filter:drop-shadow(0 0 4px var(--skull-green));
+      letter-spacing:-2px;
+      user-select:none;
+    }
+    .snake-top  { margin-bottom:6px; }
+    .snake-bottom { margin-top:6px; transform:scaleX(-1); }
+    .question-box {
+      border:1px solid rgba(57,255,20,0.35);
+      border-radius:10px;
+      padding:1.1rem 1.4rem;
+      background:rgba(57,255,20,0.04);
+      box-shadow:0 0 16px rgba(57,255,20,0.1) inset;
+      position:relative;
+    }
+    .question-box::before, .question-box::after {
+      content:'🐍';
+      position:absolute; top:50%;
+      transform:translateY(-50%);
+      font-size:1.4rem;
+      filter:drop-shadow(0 0 5px var(--skull-green));
+    }
+    .question-box::before { left:-18px; }
+    .question-box::after  { right:-18px; transform:translateY(-50%) scaleX(-1); }
+    .question-text {
+      font-family:'Kalam', cursive;
+      font-size:clamp(1.05rem, 2.8vw, 1.4rem);
+      color:var(--text);
+      text-align:center;
+      line-height:1.65;
+      text-shadow:0 1px 3px rgba(0,0,0,0.6);
+    }
+
+    /* Answer buttons */
+    .answers { display:flex; flex-direction:column; gap:0.9rem; }
+    .answer-btn {
+      position:relative;
+      padding:0;
+      background:rgba(5,0,15,0.90);
+      border:1.5px solid rgba(80,40,160,0.6);
+      border-radius:10px;
+      color:#fff;
+      font-family:'Kalam', cursive;
+      font-size:1.15rem;
+      font-style:italic;
+      text-align:left;
+      cursor:pointer;
+      overflow:hidden;
+      width:100%;
+      transition:border-color 0.22s, box-shadow 0.22s, transform 0.18s;
+    }
+    .answer-btn:hover {
+      border-color:#39FF14;
+      box-shadow:0 0 18px rgba(57,255,20,0.28), 0 0 6px rgba(57,255,20,0.15);
+      transform:translateX(4px);
+    }
+    .answer-btn:hover .answer-letter {
+      background:rgba(57,255,20,0.14);
+      border-right-color:#39FF14;
+      box-shadow:inset -4px 0 12px rgba(57,255,20,0.15);
+    }
+    .answer-btn.correct {
+      border-color:#4dbb4d !important;
+      background:rgba(10,55,10,0.75) !important;
+      box-shadow:0 0 24px rgba(77,187,77,0.45) !important;
+      transform:none !important;
+      pointer-events:none;
+    }
+    .answer-btn.correct .answer-text { color:#aef0ae !important; }
+    .answer-btn.correct .answer-letter {
+      background:rgba(77,187,77,0.20) !important;
+      color:#4dbb4d !important;
+      border-right-color:#4dbb4d !important;
+      box-shadow:inset -4px 0 12px rgba(77,187,77,0.18) !important;
+    }
+    .answer-btn.wrong {
+      border-color:#cc44cc !important;
+      background:rgba(70,0,70,0.65) !important;
+      box-shadow:0 0 24px rgba(200,68,200,0.42) !important;
+      transform:none !important;
+      pointer-events:none;
+    }
+    .answer-btn.wrong .answer-text { color:#f0b0f0 !important; }
+    .answer-btn.wrong .answer-letter {
+      background:rgba(200,68,200,0.18) !important;
+      color:#cc44cc !important;
+      border-right-color:#cc44cc !important;
+      box-shadow:inset -4px 0 12px rgba(200,68,200,0.18) !important;
+    }
+    .answer-btn.disabled { pointer-events:none; opacity:0.65; }
+
+    .answer-inner {
+      display:flex; align-items:stretch;
+      width:100%; min-height:3.6rem;
+    }
+    .answer-letter {
+      display:flex; align-items:center; justify-content:center;
+      min-width:4.2rem;
+      background:rgba(57,255,20,0.12);
+      color:#39FF14;
+      font-family:'Kalam', cursive;
+      font-size:1.05rem;
+      font-weight:700;
+      font-style:italic;
+      flex-shrink:0;
+      border-right:2px solid rgba(57,255,20,0.7);
+      box-shadow:inset -6px 0 14px rgba(57,255,20,0.12);
+      text-shadow:0 0 10px #39FF14, 0 0 22px rgba(57,255,20,0.6);
+      letter-spacing:1px;
+      transition:background 0.22s, border-right-color 0.22s, box-shadow 0.22s;
+    }
+    .answer-text {
+      display:flex; align-items:center;
+      padding:0.9rem 1.6rem;
+      flex:1;
+      line-height:1.45;
+      color:#f0eaff;
+      transition:color 0.22s;
+    }
+
+    /* ── NAGINI ─────────────────────────────────────────────── */
+    #nagini-wrap {
+      position:fixed; bottom:-220px; right:28px;
+      z-index:100;
+      transition:bottom 0.55s cubic-bezier(0.34,1.56,0.64,1);
+      pointer-events:none;
+      text-align:center;
+    }
+    #nagini-wrap.visible { bottom:18px; }
+
+    .nagini-bubble {
+      background:#1a0030;
+      border:1px solid var(--skull-green);
+      color:var(--skull-green);
+      font-family:'Kalam', cursive;
+      font-size:0.95rem;
+      padding:0.55rem 1rem;
+      border-radius:14px 14px 4px 14px;
+      margin-bottom:6px;
+      max-width:190px;
+      box-shadow:0 4px 14px rgba(0,0,0,0.6), 0 0 10px var(--green-glow);
+      text-shadow:0 0 6px var(--green-glow);
+      animation:bubblePop 0.3s ease 0.2s both;
+    }
+    @keyframes bubblePop {
+      from { transform:scale(0); opacity:0; }
+      to   { transform:scale(1); opacity:1; }
+    }
+    .nagini-figure {
+      font-size:5rem; line-height:1;
+      filter:drop-shadow(0 0 10px var(--skull-green));
+      animation:naginiRise 0.6s ease 0.1s both;
+    }
+    @keyframes naginiRise {
+      0%   { transform:translateY(50px) scale(0.4) rotate(-20deg); opacity:0; }
+      65%  { transform:translateY(-10px) scale(1.15) rotate(5deg); opacity:1; }
+      100% { transform:translateY(0) scale(1) rotate(0); opacity:1; }
+    }
+    .nagini-figure.sway {
+      animation:naginiSway 0.7s ease forwards;
+    }
+    @keyframes naginiSway {
+      0%   { transform:rotate(0deg) scale(1); }
+      25%  { transform:rotate(-15deg) scale(1.2); }
+      75%  { transform:rotate(15deg) scale(1.2); }
+      100% { transform:rotate(0deg) scale(1); }
+    }
+
+    /* ── RESULTS ────────────────────────────────────────────── */
+    .result-score {
+      font-family:'Creepster', cursive;
+      font-size:clamp(3rem,10vw,5.5rem);
+      color:var(--skull-green);
+      text-shadow:0 0 30px var(--green-glow), 0 0 60px var(--green-glow);
+      text-align:center;
+      margin:0.8rem 0 0.4rem;
+    }
+    .result-quote {
+      font-family:'Kalam', cursive;
+      font-size:clamp(1.1rem,3vw,1.5rem);
+      text-align:center;
+      margin:0.5rem 1rem 1.2rem;
+      line-height:1.65;
+      font-style:italic;
+      padding:1rem 1.2rem;
+      border-left:3px solid var(--skull-green);
+      border-right:3px solid var(--skull-green);
+      background:rgba(57,255,20,0.05);
+      border-radius:6px;
+      text-shadow:0 0 6px var(--green-glow);
+    }
+    .result-quote.bad  { color:#ff99ff; border-color:#cc44cc; background:rgba(200,0,200,0.08); text-shadow:none; }
+    .result-quote.good { color:var(--skull-green); }
+
+    .result-sub {
+      font-family:'Kalam', cursive;
+      font-size:1.05rem;
+      color:var(--text-dim);
+      text-align:center;
+      margin-bottom:1.2rem;
+      line-height:1.5;
+    }
+    .result-badge {
+      display:inline-block;
+      padding:0.5rem 1.4rem;
+      background:rgba(40,0,70,0.8);
+      border:2px solid var(--skull-green);
+      border-radius:30px;
+      font-family:'Kalam', cursive; font-weight:700;
+      font-size:0.95rem;
+      color:var(--skull-green);
+      letter-spacing:1px;
+      margin-bottom:1.2rem;
+      box-shadow:0 0 14px var(--green-glow);
+    }
+    .highscore-note {
+      font-family:'Kalam', cursive;
+      font-size:0.95rem;
+      color:var(--text-dim);
+      text-align:center;
+      margin-bottom:1.3rem;
+    }
+    .btn-row { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; }
+
+    /* ── ORNAMENT ───────────────────────────────────────────── */
+    .ornament {
+      text-align:center; font-size:1.1rem;
+      letter-spacing:6px; margin:0.8rem 0;
+      color:var(--skull-green); opacity:0.5;
+    }
+    .deco-line {
+      display:flex; align-items:center; gap:0.8rem;
+      margin:0.8rem 0; opacity:0.4;
+    }
+    .deco-line::before, .deco-line::after {
+      content:''; flex:1; height:1px;
+      background:linear-gradient(90deg, transparent, var(--skull-green), transparent);
+    }
+
+    /* ── FADE IN ────────────────────────────────────────────── */
+    .fade-in { animation:fadeIn 0.5s ease forwards; }
+    @keyframes fadeIn {
+      from { opacity:0; transform:translateY(22px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    /* ── SPELL FLASH ────────────────────────────────────────── */
+    #spell-flash {
+      position:fixed; inset:0;
+      pointer-events:none; z-index:200; opacity:0;
+      transition:opacity 0.12s;
+    }
+    #spell-flash.flash-correct { background:rgba(30,120,30,0.28); opacity:1; }
+    #spell-flash.flash-wrong   { background:rgba(150,0,150,0.28); opacity:1; }
+
+    /* ── SCORE BREAKDOWN ────────────────────────────────────── */
+    .score-breakdown {
+      display:grid; grid-template-columns:repeat(4,1fr);
+      gap:0.5rem; margin:1rem 0 1.5rem;
+    }
+    .score-cell {
+      display:flex; flex-direction:column; align-items:center;
+      background:rgba(0,0,0,0.3);
+      border-radius:8px; padding:0.6rem 0.3rem;
+      border:1px solid rgba(168,85,247,0.3);
+      font-family:'Kalam', cursive; font-size:0.8rem;
+      color:var(--text-dim);
+    }
+    .score-cell .val {
+      font-size:1.4rem; font-weight:700;
+      color:var(--skull-green);
+      text-shadow:0 0 8px var(--green-glow);
+      line-height:1;
+    }
+
+    /* ── DIFFICULTY SELECTION ───────────────────────────────── */
+    .diff-grid { display:flex; flex-direction:column; gap:0.85rem; margin-top:1rem; }
+    .diff-btn {
+      padding:1.1rem 1.4rem;
+      border-radius:12px; border:2px solid transparent;
+      text-align:left; transition:all 0.3s;
+      background:rgba(0,0,0,0.3);
+      display:flex; align-items:center; gap:1.1rem;
+    }
+    .diff-btn:hover { transform:translateX(6px); }
+    .diff-icon-lg { font-size:2rem; flex-shrink:0; line-height:1; }
+    .diff-info    { flex:1; }
+    .diff-name {
+      display:block; font-family:'Creepster', cursive;
+      font-size:1.2rem; letter-spacing:1px;
+    }
+    .diff-sub {
+      display:block; font-family:'Kalam', cursive;
+      font-size:0.88rem; opacity:0.72; margin-top:0.15rem;
+    }
+    .diff-btn.easy {
+      border-color:rgba(57,255,20,0.5); color:var(--skull-green);
+      box-shadow:0 4px 16px rgba(57,255,20,0.1);
+    }
+    .diff-btn.easy:hover { box-shadow:0 6px 26px rgba(57,255,20,0.35); border-color:var(--skull-green); background:rgba(57,255,20,0.07); }
+    .diff-btn.medium {
+      border-color:rgba(168,85,247,0.55); color:#c084fc;
+      box-shadow:0 4px 16px rgba(168,85,247,0.12);
+    }
+    .diff-btn.medium:hover { box-shadow:0 6px 26px rgba(168,85,247,0.4); border-color:#c084fc; background:rgba(168,85,247,0.09); }
+    .diff-btn.hard {
+      border-color:rgba(255,60,60,0.5); color:#ff8080;
+      box-shadow:0 4px 16px rgba(255,60,60,0.1);
+    }
+    .diff-btn.hard:hover { box-shadow:0 6px 26px rgba(255,60,60,0.35); border-color:#ff8080; background:rgba(255,60,60,0.07); }
+
+    /* Difficulty tag in quiz header */
+    .diff-tag {
+      font-family:'Kalam', cursive; font-size:0.82rem; font-weight:700;
+      padding:0.2rem 0.75rem; border-radius:12px;
+      border:1px solid rgba(57,255,20,0.45);
+      color:var(--skull-green); background:rgba(0,0,0,0.35);
+    }
+    /* Difficulty label in results */
+    #result-diff-label {
+      display:inline-block; font-family:'Kalam', cursive; font-size:0.9rem;
+      padding:0.25rem 1rem; border-radius:20px; margin-bottom:0.8rem;
+      border:1px solid rgba(168,85,247,0.5); color:#c084fc;
+      background:rgba(168,85,247,0.08);
+    }
+
+    /* ── LEADERBOARD ────────────────────────────────────────── */
+    .lb-entry {
+      display:flex; align-items:center; gap:0.9rem;
+      padding:0.75rem 1rem;
+      background:rgba(10,0,28,0.75);
+      border:1.5px solid rgba(100,50,180,0.45);
+      border-radius:10px;
+      margin-bottom:0.65rem;
+      transition:border-color 0.2s, box-shadow 0.2s;
+    }
+    .lb-entry:hover {
+      border-color:rgba(57,255,20,0.5);
+      box-shadow:0 0 12px rgba(57,255,20,0.12);
+    }
+    .lb-entry:first-child {
+      border-color:rgba(57,255,20,0.6);
+      box-shadow:0 0 18px rgba(57,255,20,0.18);
+    }
+    .lb-rank {
+      font-size:1.4rem; flex-shrink:0; width:2rem; text-align:center;
+    }
+    .lb-info { flex:1; min-width:0; }
+    .lb-name {
+      display:block; font-family:'Kalam', cursive;
+      font-size:1.1rem; font-weight:700; color:#fff;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .lb-meta {
+      display:block; font-family:'Kalam', cursive;
+      font-size:0.8rem; color:var(--text-dim); margin-top:0.1rem;
+    }
+    .lb-score { text-align:right; flex-shrink:0; }
+    .lb-pts {
+      display:block; font-family:'Creepster', cursive;
+      font-size:1.35rem; color:var(--skull-green);
+      text-shadow:0 0 10px var(--green-glow); line-height:1;
+    }
+    .lb-pct {
+      display:block; font-family:'Kalam', cursive;
+      font-size:0.8rem; color:var(--text-dim);
+    }
+    .lb-empty {
+      text-align:center; font-family:'Kalam', cursive;
+      font-size:1rem; color:var(--text-dim);
+      padding:2rem 0; font-style:italic;
+    }
+    .lb-date {
+      display:block; font-family:'Kalam', cursive;
+      font-size:0.72rem; color:rgba(184,153,212,0.5);
+      margin-top:0.1rem;
+    }
+    .clear-lb-btn {
+      background:rgba(130,0,0,0.4);
+      border-color:rgba(255,60,60,0.6);
+      color:#ff8080;
+    }
+    .clear-lb-btn:hover {
+      background:rgba(180,0,0,0.5);
+      box-shadow:0 0 20px rgba(255,60,60,0.35);
+    }
+
+    /* ── WELCOME BUTTON ROW ─────────────────────────────────────── */
+    .welcome-btn-row {
+      display:flex; gap:0.8rem; justify-content:center;
+      flex-wrap:wrap; margin-top:1.2rem;
+    }
+
+    /* ── RESPONSIVE ─────────────────────────────────────────────── */
+
+    /* Tablet – gentle scale-down */
+    @media (max-width:680px) {
+      .card { padding:2rem 1.8rem; }
+      .btn  { padding:0.8rem 1.6rem; }
+    }
+
+    /* Phone */
+    @media (max-width:500px) {
+      html { overflow-x:hidden; }
+
+      /* Screen & card */
+      .screen.active   { padding:1rem 0.75rem; }
+      #screen-quiz     { padding:0.85rem 0.6rem; }
+      .card            { padding:1.35rem 1rem; }
+      #screen-welcome .card { padding-top:3.1rem; }  /* clear the toggle button */
+
+      /* Typography */
+      h2 { margin-bottom:0.8rem; }
+      .subtitle { font-size:1rem; margin-bottom:1.1rem; }
+
+      /* ── Buttons: full-width stacked columns ── */
+      .btn {
+        padding:0.85rem 1.2rem; font-size:0.95rem;
+        min-height:44px;
+        display:flex; align-items:center; justify-content:center;
+      }
+      .btn-row,
+      .welcome-btn-row { flex-direction:column; align-items:stretch; gap:0.65rem; }
+
+      /* ── Houses ── */
+      .houses-grid { gap:0.55rem; }
+      .house-btn   { padding:0.85rem 0.4rem; min-height:78px; }
+      .house-icon  { font-size:1.7rem; }
+      .house-name  { font-size:0.9rem; }
+      .house-motto { font-size:0.74rem; }
+
+      /* ── Difficulty ── */
+      .diff-btn     { padding:0.9rem 0.85rem; gap:0.7rem; }
+      .diff-icon-lg { font-size:1.6rem; }
+      .diff-name    { font-size:1.05rem; }
+      .diff-sub     { font-size:0.8rem; }
+
+      /* ── Quiz header ── */
+      .quiz-header   { gap:0.3rem; }
+      .player-info   { font-size:0.88rem; }
+      .score-display { font-size:0.84rem; padding:0.2rem 0.62rem; }
+      .diff-tag      { font-size:0.72rem; padding:0.13rem 0.48rem; border-radius:8px; }
+
+      /* ── Question ── */
+      .question-box::before,
+      .question-box::after { display:none; }
+      .question-box  { padding:0.9rem 1rem; }
+      .question-wrap { margin:0.4rem 0 1.2rem; }
+      .snake-top, .snake-bottom { font-size:0.9rem; letter-spacing:-3px; }
+
+      /* ── Answer buttons – generous tap targets ── */
+      .answers       { gap:0.6rem; }
+      .answer-inner  { min-height:3.2rem; }
+      .answer-letter { min-width:3.4rem; font-size:0.95rem; }
+      .answer-text   { padding:0.82rem 1rem; font-size:1.05rem; line-height:1.4; }
+
+      /* ── Timer ── */
+      .timer-wrap  { width:48px; height:48px; }
+      .timer-inner { width:36px; height:36px; font-size:0.95rem; }
+
+      /* ── Nagini ── */
+      #nagini-wrap   { right:8px; }
+      .nagini-figure { font-size:3.8rem; }
+      .nagini-bubble { font-size:0.85rem; max-width:150px; padding:0.44rem 0.72rem; }
+
+      /* ── Results ── */
+      .score-breakdown { grid-template-columns:repeat(2,1fr); gap:0.4rem; }
+      .score-cell      { padding:0.5rem 0.2rem; font-size:0.75rem; }
+      .score-cell .val { font-size:1.25rem; }
+      .result-quote    { padding:0.8rem; margin:0.4rem 0 1rem; font-size:1rem; }
+      .result-sub      { font-size:0.92rem; }
+      .result-badge    { font-size:0.88rem; padding:0.4rem 1rem; }
+      .highscore-note  { font-size:0.88rem; }
+
+      /* ── Leaderboard ── */
+      .lb-entry { padding:0.58rem 0.65rem; gap:0.5rem; }
+      .lb-rank  { font-size:1.2rem; width:1.7rem; }
+      .lb-name  { font-size:0.95rem; }
+      .lb-pts   { font-size:1.15rem; }
+      .lb-meta, .lb-pct { font-size:0.75rem; }
+      .lb-date  { font-size:0.67rem; }
+    }
+
+    /* Very narrow phones ≤360px */
+    @media (max-width:360px) {
+      .card                { padding:1.1rem 0.85rem; }
+      #screen-welcome .card { padding-top:3.3rem; }
+      .btn                 { padding:0.78rem 0.9rem; font-size:0.9rem; }
+      .answer-letter       { min-width:3rem; font-size:0.9rem; }
+      .answer-text         { padding:0.78rem 0.85rem; font-size:1rem; }
+      .diff-btn            { gap:0.5rem; padding:0.8rem 0.7rem; }
+      .quiz-header         { flex-wrap:wrap; }
+      .nagini-figure       { font-size:3.2rem; }
+      .nagini-bubble       { max-width:136px; }
+    }
+
+    /* ── THEME TOGGLE BUTTON ────────────────────────────────────── */
+    .theme-toggle-btn {
+      position:absolute; top:0.9rem; right:0.9rem;
+      display:flex; align-items:center; gap:0.35rem;
+      background:rgba(57,255,20,0.08);
+      border:1.5px solid rgba(57,255,20,0.4);
+      border-radius:20px; padding:0.28rem 0.85rem;
+      color:var(--skull-green);
+      font-family:'Kalam', cursive; font-size:0.85rem;
+      transition:all 0.25s; z-index:10;
+    }
+    .theme-toggle-btn:hover {
+      background:rgba(57,255,20,0.16);
+      box-shadow:0 0 12px rgba(57,255,20,0.22);
+      transform:translateY(-1px);
+    }
+
+    /* ── SHARE COPIED STATE ─────────────────────────────────────── */
+    .btn.share-copied {
+      border-color:var(--skull-green) !important;
+      box-shadow:0 0 24px var(--green-glow) !important;
+      color:var(--skull-green) !important;
+    }
+
+    /* ── LIGHT MODE ─────────────────────────────────────────────── */
+    body.light-mode {
+      --skull-green:#5b21b6; --skull-dim:#3b1280;
+      --card-bg:rgba(255,252,255,0.93);
+      --border:rgba(107,33,168,0.42);
+      --glow:rgba(107,33,168,0.18);
+      --green-glow:rgba(91,33,182,0.22);
+      --text:#1a0040; --text-dim:#6d28d9;
+      background:radial-gradient(ellipse at 50% 0%,#dfc9ff 0%,#f0e8ff 75%);
+    }
+    body.light-mode .skull-particle {
+      color:#7c3aed; filter:drop-shadow(0 0 4px rgba(124,58,237,0.45));
+    }
+    body.light-mode .card::before { background:linear-gradient(90deg,transparent,#7c3aed,transparent); }
+    body.light-mode .card::after  { background:linear-gradient(90deg,transparent,#c084fc,transparent); }
+    body.light-mode .timer-inner  { background:#f5eaff; }
+    body.light-mode input[type="text"] { background:rgba(107,33,168,0.05); color:var(--text); }
+    body.light-mode input[type="text"]::placeholder { color:rgba(26,0,64,0.3); }
+    body.light-mode .answer-btn   { background:rgba(248,244,255,0.97); border-color:rgba(107,33,168,0.35); }
+    body.light-mode .answer-letter {
+      background:rgba(107,33,168,0.1); color:#6d28d9;
+      border-right-color:rgba(107,33,168,0.52);
+      box-shadow:inset -6px 0 14px rgba(107,33,168,0.08);
+      text-shadow:0 0 10px rgba(109,40,217,0.5);
+    }
+    body.light-mode .answer-text  { color:#1a0040; }
+    body.light-mode .answer-btn:hover {
+      border-color:#7c3aed;
+      box-shadow:0 0 18px rgba(124,58,237,0.18);
+    }
+    body.light-mode .answer-btn:hover .answer-letter {
+      background:rgba(107,33,168,0.18); border-right-color:#7c3aed;
+    }
+    body.light-mode .answer-btn.correct { background:rgba(10,80,10,0.1) !important; }
+    body.light-mode .answer-btn.correct .answer-text { color:#166534 !important; }
+    body.light-mode .answer-btn.wrong   { background:rgba(107,33,168,0.12) !important; }
+    body.light-mode .score-display {
+      background:rgba(107,33,168,0.1); border-color:rgba(107,33,168,0.38);
+      color:#6d28d9; text-shadow:none;
+    }
+    body.light-mode .diff-tag { border-color:rgba(107,33,168,0.44); color:#6d28d9; background:rgba(107,33,168,0.07); }
+    body.light-mode .question-box { background:rgba(107,33,168,0.04); border-color:rgba(107,33,168,0.28); }
+    body.light-mode .progress-bar { background:linear-gradient(90deg,#6d28d9,#c084fc); }
+    body.light-mode .progress-wrap { border-color:rgba(107,33,168,0.22); }
+    body.light-mode .lb-entry { background:rgba(235,228,255,0.85); border-color:rgba(100,50,180,0.32); }
+    body.light-mode .lb-name  { color:#1a0040; }
+    body.light-mode .lb-pts   { color:#6d28d9; text-shadow:none; }
+    body.light-mode #dark-mark { opacity:0.02; }
+    body.light-mode .theme-toggle-btn {
+      background:rgba(107,33,168,0.08); border-color:rgba(107,33,168,0.45); color:#6d28d9;
+    }
+    body.light-mode .theme-toggle-btn:hover {
+      background:rgba(107,33,168,0.16); box-shadow:0 0 12px rgba(107,33,168,0.18);
+    }
+    body.light-mode .result-score { color:#5b21b6; text-shadow:0 0 30px rgba(91,33,182,0.28); }
+    body.light-mode .result-quote.good {
+      color:#5b21b6; border-color:#5b21b6; background:rgba(91,33,182,0.05); text-shadow:none;
+    }
+    body.light-mode .result-badge { border-color:#7c3aed; color:#6d28d9; box-shadow:0 0 14px rgba(109,40,217,0.18); }
+    body.light-mode .nagini-bubble {
+      background:#f5eaff; border-color:#7c3aed; color:#5b21b6;
+      box-shadow:0 4px 14px rgba(0,0,0,0.1),0 0 10px rgba(91,33,182,0.2);
+      text-shadow:0 0 6px rgba(91,33,182,0.4);
+    }
+    body.light-mode .btn { box-shadow:0 4px 18px rgba(0,0,0,0.12),0 0 12px rgba(91,33,182,0.18); }
+    body.light-mode .house-btn { background:rgba(107,33,168,0.06); border-color:rgba(107,33,168,0.35); }
+    body.light-mode .house-btn:hover { background:rgba(107,33,168,0.13); border-color:#7c3aed; box-shadow:0 8px 28px rgba(107,33,168,0.22); }
+    body.light-mode .diff-btn { background:rgba(107,33,168,0.05); }
+  </style>
+</head>
+<body>
+
+<!-- Snake-in-Skull watermark -->
+<svg id="dark-mark" viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <!-- Skull cranium outer -->
+  <ellipse cx="100" cy="85" rx="72" ry="70" fill="#39FF14"/>
+  <!-- Skull cranium inner hollow -->
+  <ellipse cx="100" cy="83" rx="60" ry="58" fill="#06000f"/>
+  <!-- Snake outer coil inside hollow -->
+  <path d="M 100 28 C 148 22 168 64 160 96 C 152 128 124 142 100 138 C 76 134 50 116 48 88 C 46 60 64 30 86 26" stroke="#39FF14" stroke-width="9" stroke-linecap="round" fill="none"/>
+  <!-- Snake inner coil -->
+  <path d="M 126 50 C 150 68 148 104 128 118 C 108 132 80 124 70 106" stroke="#39FF14" stroke-width="7" stroke-linecap="round" fill="none"/>
+  <!-- Snake head at crown -->
+  <ellipse cx="100" cy="28" rx="15" ry="10" fill="#39FF14"/>
+  <circle cx="93"  cy="25" r="3" fill="#06000f"/>
+  <circle cx="107" cy="25" r="3" fill="#06000f"/>
+  <path d="M 100 38 L 92 48 M 100 38 L 108 48" stroke="#39FF14" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <!-- Eye sockets (over coils) -->
+  <ellipse cx="72"  cy="86" rx="22" ry="24" fill="#39FF14"/>
+  <ellipse cx="128" cy="86" rx="22" ry="24" fill="#39FF14"/>
+  <ellipse cx="72"  cy="86" rx="14" ry="16" fill="#06000f"/>
+  <ellipse cx="128" cy="86" rx="14" ry="16" fill="#06000f"/>
+  <!-- Cheekbones -->
+  <ellipse cx="40"  cy="130" rx="24" ry="28" fill="#39FF14"/>
+  <ellipse cx="160" cy="130" rx="24" ry="28" fill="#39FF14"/>
+  <ellipse cx="41"  cy="130" rx="18" ry="22" fill="#06000f"/>
+  <ellipse cx="159" cy="130" rx="18" ry="22" fill="#06000f"/>
+  <!-- Jaw -->
+  <rect x="64" y="142" width="72" height="32" rx="6" fill="#39FF14"/>
+  <rect x="72" y="144" width="56" height="24" rx="4" fill="#06000f"/>
+  <!-- Nose -->
+  <path d="M 87 114 L 100 128 L 113 114 Z" fill="#39FF14"/>
+  <!-- Teeth -->
+  <rect x="66"  y="172" width="11" height="18" rx="3" fill="#39FF14"/>
+  <rect x="81"  y="172" width="11" height="21" rx="3" fill="#39FF14"/>
+  <rect x="96"  y="172" width="11" height="21" rx="3" fill="#39FF14"/>
+  <rect x="111" y="172" width="11" height="21" rx="3" fill="#39FF14"/>
+  <rect x="126" y="172" width="11" height="18" rx="3" fill="#39FF14"/>
+</svg>
+
+<!-- Floating skulls -->
+<div id="particles"></div>
+
+<!-- Spell flash -->
+<div id="spell-flash"></div>
+
+<!-- ══════════════════════════════════
+     SCREEN 1 — WELCOME
+══════════════════════════════════ -->
+<div id="screen-welcome" class="screen active">
+  <div class="card fade-in">
+    <button class="theme-toggle-btn" id="theme-toggle" onclick="toggleTheme()">
+      <span id="theme-icon">☀️</span><span id="theme-label">Light</span>
+    </button>
+    <h1>☠ Tom Riddle's Test ☠</h1>
+    <div class="subtitle">Prove yourself worthy of the Dark Lord</div>
+
+    <div class="input-group">
+      <label for="player-name">💀 State your name, servant…</label>
+      <input type="text" id="player-name" placeholder="Enter your name..." maxlength="30" autocomplete="off">
+    </div>
+    <div class="welcome-btn-row">
+      <button class="btn" onclick="goToHouseSelect()">🐍 Begin the Deatheater's Test</button>
+      <button class="btn" onclick="showLeaderboard()" style="background:linear-gradient(135deg,#1a0040,#2d0060);">🏆 Leaderboard</button>
+    </div>
+    <div class="deco-line" style="margin-top:1.4rem;">💀</div>
+    <p class="subtitle" style="font-size:0.95rem; margin:0; opacity:0.65;">10 questions per difficulty. Nagini is watching.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     SCREEN 2 — HOUSE SELECTION
+══════════════════════════════════ -->
+<div id="screen-house" class="screen">
+  <div class="card fade-in">
+    <h2 id="welcome-msg">Choose Your Alliance</h2>
+    <div class="subtitle">☠ The Dark Lord awaits your loyalty ☠</div>
+    <div class="houses-grid">
+      <button class="house-btn" onclick="selectHouse('g','Gryffindor')">
+        <span class="house-icon">🦁</span>
+        <span class="house-name">Gryffindor</span>
+        <span class="house-motto">Courage & Bravery</span>
+      </button>
+      <button class="house-btn" onclick="selectHouse('s','Slytherin')">
+        <span class="house-icon">🐍</span>
+        <span class="house-name">Slytherin</span>
+        <span class="house-motto">Cunning & Ambition</span>
+      </button>
+      <button class="house-btn" onclick="selectHouse('r','Ravenclaw')">
+        <span class="house-icon">🦅</span>
+        <span class="house-name">Ravenclaw</span>
+        <span class="house-motto">Wisdom & Wit</span>
+      </button>
+      <button class="house-btn" onclick="selectHouse('h','Hufflepuff')">
+        <span class="house-icon">🦡</span>
+        <span class="house-name">Hufflepuff</span>
+        <span class="house-motto">Loyalty & Justice</span>
+      </button>
+    </div>
+    <div class="ornament" style="margin-top:1rem;">💀 🐍 💀</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     SCREEN 2.5 — DIFFICULTY
+══════════════════════════════════ -->
+<div id="screen-difficulty" class="screen">
+  <div class="card fade-in">
+    <h2 id="diff-welcome-msg">Choose Your Trial</h2>
+    <div class="subtitle">💀 How dark is your devotion? 💀</div>
+    <div class="diff-grid">
+      <button class="diff-btn easy" onclick="selectDifficulty('easy')">
+        <span class="diff-icon-lg">💀</span>
+        <span class="diff-info">
+          <span class="diff-name">Initiate</span>
+          <span class="diff-sub">Easy · 10 questions · Basic wizarding knowledge</span>
+        </span>
+      </button>
+      <button class="diff-btn medium" onclick="selectDifficulty('medium')">
+        <span class="diff-icon-lg">☠</span>
+        <span class="diff-info">
+          <span class="diff-name">Death Eater</span>
+          <span class="diff-sub">Medium · 10 questions · The Dark Arts run deep</span>
+        </span>
+      </button>
+      <button class="diff-btn hard" onclick="selectDifficulty('hard')">
+        <span class="diff-icon-lg">🐍</span>
+        <span class="diff-info">
+          <span class="diff-name">Dark Lord</span>
+          <span class="diff-sub">Hard · 10 questions · True mastery of the dark</span>
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     SCREEN 3 — QUIZ
+══════════════════════════════════ -->
+<div id="screen-quiz" class="screen">
+  <div class="card fade-in">
+    <div class="quiz-header">
+      <div class="player-info">☠ <span id="quiz-player-name"></span></div>
+      <span class="diff-tag" id="diff-badge">Initiate</span>
+      <div class="score-display">🐍 Score: <span id="score-display">0</span></div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-bar" id="progress-bar" style="width:0%"></div>
+    </div>
+    <div class="quiz-meta">
+      <div class="progress-label">Question <span id="q-num">1</span> of <span id="q-total">10</span></div>
+      <div class="timer-wrap" id="timer-ring">
+        <div class="timer-inner" id="timer-count">30</div>
+      </div>
+    </div>
+    <div class="question-wrap">
+      <span class="snake-top">🐍〜〜〜〜〜〜〜〜〜〜〜🐍</span>
+      <div class="question-box">
+        <div class="question-text" id="question-text"></div>
+      </div>
+      <span class="snake-bottom">🐍〜〜〜〜〜〜〜〜〜〜〜🐍</span>
+    </div>
+    <div class="answers" id="answers"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     SCREEN 4 — RESULTS
+══════════════════════════════════ -->
+<div id="screen-results" class="screen">
+  <div class="card fade-in">
+    <h2>☠ The Verdict ☠</h2>
+    <div style="text-align:center; font-size:2.5rem;" id="result-house-icon"></div>
+    <div style="text-align:center;"><span id="result-diff-label">Initiate</span></div>
+    <div class="result-score" id="result-score-display"></div>
+
+    <!-- Score breakdown grid -->
+    <div class="score-breakdown" id="score-breakdown"></div>
+
+    <!-- Voldemort quote -->
+    <div class="result-quote" id="result-quote"></div>
+    <div class="result-sub" id="result-sub"></div>
+
+    <div style="text-align:center;">
+      <span class="result-badge" id="result-badge"></span>
+    </div>
+    <div class="highscore-note" id="highscore-note"></div>
+    <div class="btn-row">
+      <button class="btn" id="share-btn" onclick="shareScore()">📋 Share</button>
+      <button class="btn" onclick="playAgain()">🐍 Try Again</button>
+      <button class="btn" onclick="changeDifficulty()">💀 Difficulty</button>
+      <button class="btn" onclick="changeHouse()">☠ House</button>
+      <button class="btn" onclick="showLeaderboard()" style="background:linear-gradient(135deg,#1a0040,#2d0060);">🏆 Leaderboard</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     SCREEN 5 — LEADERBOARD
+══════════════════════════════════ -->
+<div id="screen-leaderboard" class="screen">
+  <div class="card fade-in">
+    <h2>🏆 Dark Lord's Honour Roll</h2>
+    <div class="subtitle">The finest servants of the Dark Lord</div>
+    <div id="leaderboard-list"></div>
+    <div class="btn-row" style="margin-top:1.5rem;">
+      <button class="btn clear-lb-btn" onclick="clearLeaderboard()">💀 Clear All</button>
+      <button class="btn" onclick="goBackFromLeaderboard()">🐍 Back</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     NAGINI
+══════════════════════════════════ -->
+<div id="nagini-wrap">
+  <div class="nagini-bubble" id="nagini-speech"></div>
+  <div class="nagini-figure" id="nagini-figure">🐍</div>
+</div>
+
+<!-- ══════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════ -->
+<script>
+/* ── WAND CURSOR (base64) ─────────────────────────────────── */
+(function(){
+  var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">'
+    + '<path d="M 7.1 29.1 L 2.9 24.9 L 22.9 4.9 L 27.1 9.1 Z" fill="white"/>'
+    + '<circle cx="25" cy="7" r="5" fill="#39FF14"/>'
+    + '<circle cx="25" cy="7" r="2" fill="white"/>'
+    + '</svg>';
+  var b64 = btoa(svg);
+  var st  = document.createElement('style');
+  st.textContent = '* { cursor: url("data:image/svg+xml;base64,' + b64 + '") 5 27, auto !important; }';
+  document.head.appendChild(st);
+})();
+
+/* ── ALL QUESTIONS ────────────────────────────────────────── */
+const ALL_QUESTIONS = {
+  easy: [
+    { q: "What is Harry Potter's owl's name?",
+      options: ["Errol", "Hedwig", "Pigwidgeon"], correct: 1 },
+    { q: "Which Hogwarts house is Harry Potter sorted into?",
+      options: ["Slytherin", "Hufflepuff", "Gryffindor"], correct: 2 },
+    { q: "What magical sport is played on broomsticks at Hogwarts?",
+      options: ["Quodpot", "Quidditch", "Broomsball"], correct: 1 },
+    { q: "What is the name of Hagrid's three-headed dog?",
+      options: ["Fang", "Fluffy", "Norbert"], correct: 1 },
+    { q: "What does the spell \"Expelliarmus\" do?",
+      options: ["Creates a blinding light", "Disarms an opponent", "Locks a door"], correct: 1 },
+    { q: "What is the name of Voldemort's snake?",
+      options: ["Basilisk", "Norberta", "Nagini"], correct: 2 },
+    { q: "What is Harry Potter's godfather's name?",
+      options: ["Remus Lupin", "Sirius Black", "Albus Dumbledore"], correct: 1 },
+    { q: "What colour is the Hogwarts Express?",
+      options: ["Midnight blue", "Scarlet red", "Jet black"], correct: 1 },
+    { q: "Who teaches Potions when Harry first arrives at Hogwarts?",
+      options: ["Professor Dumbledore", "Professor Snape", "Professor McGonagall"], correct: 1 },
+    { q: "What is the name of the magical village near Hogwarts?",
+      options: ["Hogsmeade", "Godric's Hollow", "Diagon Alley"], correct: 0 }
+  ],
+  medium: [
+    { q: "What are the core materials of Harry Potter's wand?",
+      options: ["Oak and dragon heartstring", "Holly and phoenix feather", "Willow and unicorn hair"], correct: 1 },
+    { q: "Which house did the Sorting Hat seriously consider placing Harry in?",
+      options: ["Hufflepuff", "Ravenclaw", "Slytherin"], correct: 2 },
+    { q: "Who is revealed to be the Half-Blood Prince?",
+      options: ["Lord Voldemort", "Sirius Black", "Severus Snape"], correct: 2 },
+    { q: "What animal does Harry's Patronus take the form of?",
+      options: ["A wolf", "A phoenix", "A stag"], correct: 2 },
+    { q: "What is the name of the Weasley family's home?",
+      options: ["The Hollow", "The Nest", "The Burrow"], correct: 2 },
+    { q: "Which creature is known as the \"King of Serpents\"?",
+      options: ["Manticore", "Basilisk", "Nundu"], correct: 1 },
+    { q: "How many Horcruxes did Voldemort intentionally create?",
+      options: ["5", "6", "8"], correct: 1 },
+    { q: "What is the name of the goblin-run bank in Diagon Alley?",
+      options: ["Ollivanders", "Gringotts", "Borgin and Burkes"], correct: 1 },
+    { q: "What form does Hermione Granger's Boggart take?",
+      options: ["Professor McGonagall telling her she failed", "A giant spider", "Lord Voldemort"], correct: 0 },
+    { q: "What does the incantation \"Lumos\" do?",
+      options: ["Opens locked doors", "Produces light from the wand tip", "Disarms an opponent"], correct: 1 }
+  ],
+  hard: [
+    { q: "What is Dumbledore's full name?",
+      options: ["Albus Wulfric Brian Percival", "Albus Percival Wulfric Brian", "Albus Brian Percival Wulfric"], correct: 1 },
+    { q: "Which Gringotts vault number holds the Philosopher's Stone?",
+      options: ["Vault 317", "Vault 666", "Vault 713"], correct: 2 },
+    { q: "What is the name of the Ravenclaw house ghost?",
+      options: ["The Bloody Baron", "The Grey Lady", "Nearly Headless Nick"], correct: 1 },
+    { q: "What type of creature is Hagrid's pet Aragog?",
+      options: ["A Basilisk", "An Acromantula", "A Hippogriff"], correct: 1 },
+    { q: "What is the incantation that reveals a wand's recent magical history?",
+      options: ["Homenum Revelio", "Priori Incantatem", "Expecto Patronum"], correct: 1 },
+    { q: "What is the core material of Voldemort's wand?",
+      options: ["Dragon heartstring", "Unicorn hair", "Phoenix feather"], correct: 2 },
+    { q: "What are the names of the three Peverell brothers?",
+      options: ["Antioch, Cadmus and Ignotus", "Godric, Salazar and Ignotus", "Merlin, Cadmus and Antioch"], correct: 0 },
+    { q: "What is the name of the luck potion Harry uses in his sixth year?",
+      options: ["Veritaserum", "Felix Felicis", "Polyjuice Potion"], correct: 1 },
+    { q: "Which dark wizard did Dumbledore defeat in 1945?",
+      options: ["Herpo the Foul", "Emeric the Evil", "Gellert Grindelwald"], correct: 2 },
+    { q: "What position does Oliver Wood play on the Gryffindor Quidditch team?",
+      options: ["Chaser", "Beater", "Keeper"], correct: 2 }
+  ]
+};
+
+/* ── NAGINI LINES ──────────────────────────────────────────── */
+const NAGINI_CORRECT = [
+  "Yesss… the Dark Lord is pleased 🐍",
+  "Well done, servant… 🐍",
+  "Nagini approves of thisss…",
+  "The Dark Lord smiles upon you 🐍",
+  "Correct… you may yet survive 🐍"
+];
+const NAGINI_WRONG = [
+  "Nagini is… displeased 🐍",
+  "The Dark Lord is disappointed…",
+  "Wrong… Nagini remembers thisss.",
+  "Foolish… even Nagini knew that 🐍",
+  "Sssilly creature… wrong answer 🐍"
+];
+
+/* ── DIFFICULTY LABELS ────────────────────────────────────── */
+const DIFF_LABELS = { easy:'Initiate', medium:'Death Eater', hard:'Dark Lord' };
+
+/* ── SHUFFLE ──────────────────────────────────────────────── */
+function shuffleArray(arr) {
+  for (var i = arr.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+  }
+  return arr;
+}
+
+/* ── STATE ────────────────────────────────────────────────── */
+let state = {
+  name:'', house:'', houseName:'',
+  difficulty:'easy', diffLabel:'Initiate', questions:[],
+  score:0, questionIndex:0, answered:false
+};
+
+/* ── FLOATING SKULL PARTICLES ─────────────────────────────── */
+const SKULL_CHARS = ['💀','🦴','☠','💀','🦴'];
+function spawnParticles() {
+  const container = document.getElementById('particles');
+  container.innerHTML = '';
+  for (let i = 0; i < 40; i++) {
+    const el = document.createElement('div');
+    el.className = 'skull-particle';
+    el.textContent = SKULL_CHARS[Math.floor(Math.random() * SKULL_CHARS.length)];
+    el.style.cssText = `
+      left:${Math.random()*100}%;
+      top:${Math.random()*100}%;
+      --sz:${0.6+Math.random()*1.2}rem;
+      --d:${6+Math.random()*10}s;
+      --delay:${Math.random()*10}s;
+    `;
+    container.appendChild(el);
+  }
+}
+spawnParticles();
+
+/* ── SCREEN HELPERS ───────────────────────────────────────── */
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById(id);
+  el.classList.add('active');
+  const card = el.querySelector('.card');
+  if (card) { card.classList.remove('fade-in'); void card.offsetWidth; card.classList.add('fade-in'); }
+}
+
+/* ── SCREEN 1 → 2 (name → house) ─────────────────────────── */
+function goToHouseSelect() {
+  const inp = document.getElementById('player-name');
+  const name = inp.value.trim();
+  if (!name) {
+    inp.style.borderColor = '#cc44cc';
+    inp.style.boxShadow = '0 0 12px rgba(200,0,200,0.4)';
+    inp.placeholder = 'Nagini demands a name…';
+    setTimeout(() => {
+      inp.style.borderColor = '';
+      inp.style.boxShadow = '';
+      inp.placeholder = 'Enter your name...';
+    }, 1600);
+    return;
+  }
+  state.name = name;
+  document.getElementById('welcome-msg').textContent = `${name}… choose wisely.`;
+  showScreen('screen-house');
+}
+
+/* ── SCREEN 2 → 3 (house → difficulty) ───────────────────── */
+function selectHouse(code, name) {
+  state.house = code;
+  state.houseName = name;
+  try {
+    document.getElementById('diff-welcome-msg').textContent =
+      state.name + '… how deep does your darkness run?';
+  } catch(e) {}
+  showScreen('screen-difficulty');
+}
+
+/* ── SCREEN 3 → 4 (difficulty → quiz) ────────────────────── */
+function selectDifficulty(diff) {
+  state.difficulty   = diff;
+  state.diffLabel    = DIFF_LABELS[diff] || diff;
+  state.questions    = shuffleArray([].concat(ALL_QUESTIONS[diff] || []));
+  state.score        = 0;
+  state.questionIndex = 0;
+  try {
+    document.getElementById('quiz-player-name').textContent = state.name;
+    document.getElementById('diff-badge').textContent       = state.diffLabel;
+    document.getElementById('q-total').textContent          = state.questions.length;
+  } catch(e) {}
+  showScreen('screen-quiz');
+  renderQuestion();
+}
+
+/* ── COUNTDOWN TIMER ─────────────────────────────────────── */
+var _timerInterval = null;
+var _timeLeft      = 30;
+var TIMER_SECONDS  = 30;
+
+function startTimer() {
+  stopTimer();
+  _timeLeft = TIMER_SECONDS;
+  _updateTimerUI();
+  _timerInterval = setInterval(function() {
+    _timeLeft--;
+    _updateTimerUI();
+    if (_timeLeft <= 0) { stopTimer(); _timeExpired(); }
+  }, 1000);
+}
+
+function stopTimer() {
+  if (_timerInterval) { clearInterval(_timerInterval); _timerInterval = null; }
+}
+
+function _updateTimerUI() {
+  var ring  = document.getElementById('timer-ring');
+  var count = document.getElementById('timer-count');
+  if (!ring || !count) return;
+  var pct   = Math.max(0, (_timeLeft / TIMER_SECONDS) * 100);
+  var color = _timeLeft > 10 ? '#39FF14' : _timeLeft > 5 ? '#ffaa00' : '#ff4444';
+  var glow  = _timeLeft > 10
+    ? 'rgba(57,255,20,0.4)'
+    : _timeLeft > 5 ? 'rgba(255,170,0,0.5)' : 'rgba(255,68,68,0.65)';
+  ring.style.background  = 'conic-gradient(' + color + ' ' + pct + '%, rgba(255,255,255,0.07) 0)';
+  ring.style.boxShadow   = '0 0 14px ' + glow;
+  count.style.color      = color;
+  count.style.textShadow = '0 0 8px ' + color;
+  count.textContent      = _timeLeft;
+}
+
+function _timeExpired() {
+  if (state.answered) return;
+  state.answered = true;
+  var q = state.questions[state.questionIndex];
+  /* Reveal correct answer; no wrong highlight since player didn't pick */
+  document.querySelectorAll('.answer-btn').forEach(function(btn, i) {
+    btn.classList.add('disabled');
+    if (i === q.correct) btn.classList.add('correct');
+  });
+  var flash = document.getElementById('spell-flash');
+  flash.className = 'flash-wrong';
+  setTimeout(function() { flash.className = ''; flash.style.opacity = '0'; }, 280);
+  showNagini(false);
+  setTimeout(function() {
+    state.questionIndex++;
+    if (state.questionIndex < state.questions.length) renderQuestion();
+    else showResults();
+  }, 2300);
+}
+
+/* ── QUIZ ─────────────────────────────────────────────────── */
+function renderQuestion() {
+  const q = state.questions[state.questionIndex];
+  state.answered = false;
+  const pct = (state.questionIndex / state.questions.length) * 100;
+  document.getElementById('progress-bar').style.width = pct + '%';
+  document.getElementById('q-num').textContent = state.questionIndex + 1;
+  document.getElementById('score-display').textContent = state.score;
+  document.getElementById('question-text').textContent = q.q;
+
+  const answersEl = document.getElementById('answers');
+  answersEl.innerHTML = '';
+  ['I.','II.','III.'].forEach((letter, i) => {
+    const btn   = document.createElement('button');
+    btn.className = 'answer-btn';
+    const inner = document.createElement('span');
+    inner.className = 'answer-inner';
+    const lbl   = document.createElement('span');
+    lbl.className = 'answer-letter';
+    lbl.textContent = letter;
+    const txt   = document.createElement('span');
+    txt.className = 'answer-text';
+    txt.textContent = q.options[i];
+    inner.appendChild(lbl);
+    inner.appendChild(txt);
+    btn.appendChild(inner);
+    btn.onclick = () => handleAnswer(i);
+    answersEl.appendChild(btn);
+  });
+  hideNagini();
+  startTimer();
+}
+
+function handleAnswer(chosenIndex) {
+  if (state.answered) return;
+  stopTimer();
+  state.answered = true;
+  const q = state.questions[state.questionIndex];
+  const correct = chosenIndex === q.correct;
+  if (correct) state.score++;
+
+  document.querySelectorAll('.answer-btn').forEach((btn, i) => {
+    btn.classList.add('disabled');
+    if (i === q.correct) btn.classList.add('correct');
+    else if (i === chosenIndex && !correct) btn.classList.add('wrong');
+  });
+
+  const flash = document.getElementById('spell-flash');
+  flash.className = correct ? 'flash-correct' : 'flash-wrong';
+  setTimeout(() => { flash.className = ''; flash.style.opacity = '0'; }, 280);
+
+  showNagini(correct);
+  setTimeout(() => {
+    state.questionIndex++;
+    if (state.questionIndex < state.questions.length) renderQuestion();
+    else showResults();
+  }, 2300);
+}
+
+/* ── NAGINI ───────────────────────────────────────────────── */
+function showNagini(correct) {
+  const lines = correct ? NAGINI_CORRECT : NAGINI_WRONG;
+  document.getElementById('nagini-speech').textContent = lines[Math.floor(Math.random() * lines.length)];
+  const fig = document.getElementById('nagini-figure');
+  fig.className = 'nagini-figure';
+  document.getElementById('nagini-wrap').classList.add('visible');
+  if (correct) setTimeout(() => fig.classList.add('sway'), 450);
+}
+function hideNagini() {
+  document.getElementById('nagini-wrap').classList.remove('visible');
+}
+
+/* ── RESULTS ──────────────────────────────────────────────── */
+const HOUSE_ICONS = { g:'🦁', s:'🐍', r:'🦅', h:'🦡' };
+
+function showResults() {
+  saveToLeaderboard();
+  /* Show the screen FIRST so nothing blocks the transition */
+  showScreen('screen-results');
+
+  const total     = state.questions.length;
+  const pct       = state.score / total;
+  const isPassing = pct >= 0.7;
+
+  /* Voldemort quote */
+  const quote      = isPassing
+    ? '”From this moment you put your faith in me.”'
+    : '”Nagini… kill.”';
+  const quoteClass = isPassing ? 'result-quote good' : 'result-quote bad';
+
+  /* Sub-message & badge */
+  let sub, badge;
+  if (pct === 1) {
+    sub   = 'Flawless, ' + state.name + '. The Dark Lord sees great potential in you.';
+    badge = '☠ Dark Lord\'s Chosen';
+  } else if (pct >= 0.85) {
+    sub   = 'Impressive, ' + state.name + '. You have earned your place among the Death Eaters.';
+    badge = '🐍 Death Eater';
+  } else if (isPassing) {
+    sub   = 'Acceptable, ' + state.name + '. The Dark Lord allows you to live… for now.';
+    badge = '💀 Marked Servant';
+  } else if (pct >= 0.4) {
+    sub   = 'Disappointing, ' + state.name + '. Even a first-year knows more than this.';
+    badge = '🦴 Failed Servant';
+  } else {
+    sub   = 'Pathetic, ' + state.name + '. Nagini is already on her way.';
+    badge = '☠ Squib';
+  }
+
+  /* Score breakdown */
+  const numCorrect = state.score;
+  const numWrong   = total - numCorrect;
+  const percent    = Math.round(pct * 100);
+  try {
+    document.getElementById('score-breakdown').innerHTML =
+      '<div class=”score-cell”><span class=”val”>' + numCorrect + '</span>Correct</div>' +
+      '<div class=”score-cell”><span class=”val”>' + numWrong   + '</span>Wrong</div>'   +
+      '<div class=”score-cell”><span class=”val”>' + percent    + '%</span>Score</div>'  +
+      '<div class=”score-cell”><span class=”val”>' + total      + '</span>Total</div>';
+  } catch(e) {}
+
+  /* Populate all fields */
+  try {
+    document.getElementById('result-house-icon').textContent    = HOUSE_ICONS[state.house] || '☠';
+    document.getElementById('result-diff-label').textContent    = state.diffLabel;
+    document.getElementById('result-score-display').textContent = state.score + '/' + total;
+    document.getElementById('result-quote').textContent         = quote;
+    document.getElementById('result-quote').className           = quoteClass;
+    document.getElementById('result-sub').textContent           = sub;
+    document.getElementById('result-badge').textContent         = badge;
+  } catch(e) {}
+
+  /* High score — keyed by house + difficulty, wrapped so file:// can't break it */
+  try {
+    const key  = 'tr_trivia_hs_' + state.house + '_' + state.difficulty;
+    const prev = parseInt(localStorage.getItem(key) || '0', 10);
+    let hsNote = '';
+    if (state.score > prev) {
+      localStorage.setItem(key, state.score);
+      hsNote = prev === 0
+        ? 'First ' + state.diffLabel + ' run recorded! 🐍'
+        : 'New ' + state.diffLabel + ' best! (was ' + prev + '/' + total + ') 🐍';
+    } else if (prev > 0) {
+      hsNote = state.diffLabel + ' best: ' + prev + '/' + total;
+    }
+    document.getElementById('highscore-note').textContent = hsNote;
+  } catch(e) {}
+
+  /* Nagini on results — delay slightly so screen paint finishes first */
+  setTimeout(function() {
+    var wrap   = document.getElementById('nagini-wrap');
+    var fig    = document.getElementById('nagini-figure');
+    var speech = document.getElementById('nagini-speech');
+    if (speech) speech.textContent = isPassing
+      ? 'The Dark Lord is pleasssed… 🐍'
+      : 'Nagini comesss for you… 🐍';
+    if (fig) { fig.classList.remove('sway'); }
+    if (wrap) wrap.classList.add('visible');
+  }, 400);
+}
+
+/* ── LEADERBOARD ─────────────────────────────────────────── */
+var LB_KEY = 'tr_leaderboard_v2';
+var _lbFrom = 'screen-welcome'; // which screen to return to
+
+function saveToLeaderboard() {
+  try {
+    var entries = JSON.parse(localStorage.getItem(LB_KEY) || '[]');
+    var total   = state.questions.length;
+    var pct     = Math.round((state.score / total) * 100);
+    var diffOrder = { hard:3, medium:2, easy:1 };
+    entries.push({
+      name:      state.name,
+      score:     state.score,
+      total:     total,
+      percent:   pct,
+      difficulty: state.difficulty,
+      diffLabel: state.diffLabel,
+      house:     state.house,
+      houseName: state.houseName,
+      date:      new Date().toLocaleDateString()
+    });
+    entries.sort(function(a, b) {
+      if (b.percent !== a.percent) return b.percent - a.percent;
+      return (diffOrder[b.difficulty] || 0) - (diffOrder[a.difficulty] || 0);
+    });
+    localStorage.setItem(LB_KEY, JSON.stringify(entries.slice(0, 20)));
+  } catch(e) {}
+}
+
+function getLeaderboard() {
+  try { return JSON.parse(localStorage.getItem(LB_KEY) || '[]'); }
+  catch(e) { return []; }
+}
+
+function clearLeaderboard() {
+  try { localStorage.removeItem(LB_KEY); } catch(e) {}
+  renderLeaderboard();
+}
+
+function renderLeaderboard() {
+  var list = document.getElementById('leaderboard-list');
+  if (!list) return;
+  var entries   = getLeaderboard().slice(0, 5);
+  var medals    = ['🥇','🥈','🥉','💀','☠'];
+  var houseIcons = { g:'🦁', s:'🐍', r:'🦅', h:'🦡' };
+  if (entries.length === 0) {
+    list.innerHTML = '<div class="lb-empty">No scores yet… Prove yourself worthy of the Dark Lord.</div>';
+    return;
+  }
+  var html = '';
+  for (var i = 0; i < entries.length; i++) {
+    var e = entries[i];
+    html += '<div class="lb-entry">';
+    html += '<span class="lb-rank">' + (medals[i] || '#' + (i + 1)) + '</span>';
+    html += '<div class="lb-info">';
+    html += '<span class="lb-name">' + e.name + '</span>';
+    html += '<span class="lb-meta">' + (houseIcons[e.house] || '☠') + ' ' + e.houseName + ' &middot; ' + e.diffLabel + '</span>';
+    html += '<span class="lb-date">' + e.date + '</span>';
+    html += '</div>';
+    html += '<div class="lb-score">';
+    html += '<span class="lb-pts">' + e.score + '/' + e.total + '</span>';
+    html += '<span class="lb-pct">' + e.percent + '%</span>';
+    html += '</div>';
+    html += '</div>';
+  }
+  list.innerHTML = html;
+}
+
+function showLeaderboard() {
+  _lbFrom = document.querySelector('.screen.active') ? document.querySelector('.screen.active').id : 'screen-welcome';
+  renderLeaderboard();
+  showScreen('screen-leaderboard');
+}
+
+function goBackFromLeaderboard() {
+  showScreen(_lbFrom || 'screen-welcome');
+}
+
+/* ── REPLAY / NAVIGATION ──────────────────────────────────── */
+function playAgain() {
+  hideNagini();
+  state.questions    = shuffleArray([].concat(ALL_QUESTIONS[state.difficulty] || []));
+  state.score = 0;
+  state.questionIndex = 0;
+  try {
+    document.getElementById('quiz-player-name').textContent = state.name;
+    document.getElementById('diff-badge').textContent       = state.diffLabel;
+    document.getElementById('q-total').textContent          = state.questions.length;
+  } catch(e) {}
+  showScreen('screen-quiz');
+  renderQuestion();
+}
+function changeDifficulty() {
+  hideNagini();
+  try {
+    document.getElementById('diff-welcome-msg').textContent =
+      state.name + '… how deep does your darkness run?';
+  } catch(e) {}
+  showScreen('screen-difficulty');
+}
+function changeHouse() {
+  hideNagini();
+  document.getElementById('welcome-msg').textContent = `${state.name}… choose wisely.`;
+  showScreen('screen-house');
+}
+
+/* ── THEME ────────────────────────────────────────────────── */
+var _theme = (function() {
+  try { return localStorage.getItem('tr_theme') || 'dark'; } catch(e) { return 'dark'; }
+})();
+
+function applyTheme() {
+  var isLight = (_theme === 'light');
+  document.body.classList.toggle('light-mode', isLight);
+  var icon  = document.getElementById('theme-icon');
+  var label = document.getElementById('theme-label');
+  if (icon)  icon.textContent  = isLight ? '🌙' : '☀️';
+  if (label) label.textContent = isLight ? 'Dark' : 'Light';
+}
+
+function toggleTheme() {
+  _theme = (_theme === 'dark') ? 'light' : 'dark';
+  try { localStorage.setItem('tr_theme', _theme); } catch(e) {}
+  applyTheme();
+}
+
+/* ── SHARE SCORE ──────────────────────────────────────────── */
+function shareScore() {
+  var total    = state.questions.length;
+  var pct      = Math.round((state.score / total) * 100);
+  var hIcons   = { g:'🦁', s:'🐍', r:'🦅', h:'🦡' };
+  var lines = [
+    '☠ Tom Riddle\'s Test ☠',
+    '',
+    state.name + ' scored ' + state.score + '/' + total + ' (' + pct + '%) — ' + state.diffLabel,
+    (hIcons[state.house] || '☠') + ' ' + state.houseName,
+    '',
+    'Can you prove yourself worthy of the Dark Lord? 🐍'
+  ];
+  var text = lines.join('\n');
+  var btn  = document.getElementById('share-btn');
+
+  function onCopied() {
+    if (!btn) return;
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('share-copied');
+    setTimeout(function() {
+      btn.textContent = '📋 Share';
+      btn.classList.remove('share-copied');
+    }, 2200);
+  }
+  function onFail() {
+    if (!btn) return;
+    btn.textContent = '✗ Failed';
+    setTimeout(function() { btn.textContent = '📋 Share'; }, 2000);
+  }
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(onCopied).catch(function() { _fbCopy(text, onCopied, onFail); });
+  } else {
+    _fbCopy(text, onCopied, onFail);
+  }
+}
+
+function _fbCopy(text, onSuccess, onFail) {
+  var ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0;';
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand('copy'); if (onSuccess) onSuccess(); }
+  catch(e) { if (onFail) onFail(); }
+  document.body.removeChild(ta);
+}
+
+/* ── INIT ─────────────────────────────────────────────────── */
+applyTheme();
+
+/* ── ENTER KEY ────────────────────────────────────────────── */
+document.getElementById('player-name').addEventListener('keydown', e => {
+  if (e.key === 'Enter') goToHouseSelect();
+});
+</script>
+</body>
+</html>
