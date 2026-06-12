@@ -3,11 +3,10 @@ import { useState } from 'react'
 import { HOUSE_ICONS, DIFF_LABELS } from '@/lib/questions'
 
 export default function ResultsScreen({
-  score, total, difficulty, house, houseName,
-  onSave, onPlayAgain, onLeaderboard,
+  playerName, score, total, difficulty, house, houseName,
+  onSave, onPlayAgain, onLeaderboard, onNewGame,
 }) {
-  const [name, setName]       = useState('')
-  const [saved, setSaved]     = useState(false)
+  const [saved, setSaved]      = useState(false)
   const [shareState, setShare] = useState('idle') // idle | copied | failed
 
   const pct       = Math.round((score / total) * 100)
@@ -23,9 +22,8 @@ export default function ResultsScreen({
   }
 
   function handleSave() {
-    if (!name.trim()) return
     onSave({
-      name: name.trim(),
+      name: playerName,
       score, total, difficulty, diffLabel,
       house, houseName,
       pct,
@@ -37,7 +35,7 @@ export default function ResultsScreen({
   function handleShare() {
     const lines = [
       '☠ Tom Riddle\'s Test ☠', '',
-      `${name.trim() || 'Anonymous'} scored ${score}/${total} (${pct}%) — ${diffLabel}`,
+      `${playerName} scored ${score}/${total} (${pct}%) — ${diffLabel}`,
       `${houseIcon} ${houseName}`, '',
       'Can you prove yourself worthy of the Dark Lord? 🐍',
     ]
@@ -80,6 +78,9 @@ export default function ResultsScreen({
         <div className="results-house-badge">{houseIcon}</div>
         <h1 className="score-big">{score}<span style={{ fontSize: '0.5em', color: 'var(--text-dim)' }}>/{total}</span></h1>
         <p className="score-label">{pct}% — {diffLabel}</p>
+        <p className="subtitle" style={{ marginBottom: '0.4rem' }}>
+          Well done, <strong style={{ color: 'var(--skull-green)' }}>{playerName}</strong>.
+        </p>
         <p className="subtitle">{getVerdict()}</p>
 
         <div className="score-breakdown">
@@ -98,25 +99,16 @@ export default function ResultsScreen({
         </div>
 
         {/* Save to leaderboard */}
-        {!saved ? (
-          <div className="name-form">
-            <input
-              className="name-input"
-              type="text"
-              maxLength={24}
-              placeholder="Enter your name to save score…"
-              value={name}
-              onChange={e => setName(e.target.value)}
-              onKeyDown={e => e.key === 'Enter' && handleSave()}
-            />
-            <button className="btn" onClick={handleSave} disabled={!name.trim()}>
+        {saved ? (
+          <p className="subtitle" style={{ marginTop: '0.6rem' }}>
+            ✓ Score saved to the leaderboard!
+          </p>
+        ) : (
+          <div style={{ marginTop: '0.8rem', display: 'flex', justifyContent: 'center' }}>
+            <button className="btn" onClick={handleSave}>
               💾 Save to Leaderboard
             </button>
           </div>
-        ) : (
-          <p className="subtitle" style={{ marginTop: '0.8rem' }}>
-            ✓ Score saved, {name.trim()}!
-          </p>
         )}
 
         <div className="btn-row">
@@ -128,6 +120,13 @@ export default function ResultsScreen({
           </button>
           <button className="btn" onClick={onLeaderboard}>🏆 Leaderboard</button>
           <button className="btn" onClick={onPlayAgain}>🔄 Play Again</button>
+          <button
+            className="btn"
+            style={{ background: 'linear-gradient(135deg,#1a0040,#2d0060)' }}
+            onClick={onNewGame}
+          >
+            🏠 New Game
+          </button>
         </div>
       </div>
     </div>

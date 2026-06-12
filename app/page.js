@@ -3,23 +3,25 @@ import { useState, useEffect, useRef } from 'react'
 import dynamic from 'next/dynamic'
 
 import WelcomeScreen      from '@/components/WelcomeScreen'
+import NameEntry          from '@/components/NameEntry'
 import HouseSelect        from '@/components/HouseSelect'
 import DifficultySelect   from '@/components/DifficultySelect'
 import QuizScreen         from '@/components/QuizScreen'
 import ResultsScreen      from '@/components/ResultsScreen'
 import LeaderboardScreen  from '@/components/LeaderboardScreen'
 
-import { ALL_QUESTIONS, DIFF_LABELS, shuffleArray } from '@/lib/questions'
+import { ALL_QUESTIONS, shuffleArray } from '@/lib/questions'
+import { fetchQuestions }              from '@/lib/fetchQuestions'
 import { saveToLeaderboard, getLeaderboard, clearLeaderboard } from '@/lib/leaderboard'
 
-// Particles uses DOM, must be client-only with no SSR
 const Particles = dynamic(() => import('@/components/Particles'), { ssr: false })
 
-// Screens
 const SCREENS = {
   WELCOME:     'welcome',
+  NAME:        'name',
   HOUSE:       'house',
   DIFFICULTY:  'difficulty',
+  LOADING:     'loading',
   QUIZ:        'quiz',
   RESULTS:     'results',
   LEADERBOARD: 'leaderboard',
@@ -49,25 +51,41 @@ export default function Home() {
   const [screen, setScreen] = useState(SCREENS.WELCOME)
 
   // ── Game state ───────────────────────────────────────────
-  const [house,      setHouse]      = useState(null)  // 'g' | 's' | 'r' | 'h'
+  const [playerName, setPlayerName] = useState('')
+  const [house,      setHouse]      = useState(null)
   const [houseName,  setHouseName]  = useState('')
-  const [difficulty, setDifficulty] = useState(null)  // 'easy' | 'medium' | 'hard'
+  const [difficulty, setDifficulty] = useState(null)
   const [questions,  setQuestions]  = useState([])
   const [qIndex,     setQIndex]     = useState(0)
   const [score,      setScore]      = useState(0)
-
-  // useRef to avoid stale-closure issue when saving to leaderboard
   const scoreRef = useRef(0)
 
   // ── Leaderboard ──────────────────────────────────────────
   const [entries, setEntries] = useState([])
 
-  function refreshLeaderboard() {
-    setEntries(getLeaderboard())
+  function refreshLeaderboard() { setEntries(getLeaderboard()) }
+
+  // ── Shared question loader (fetch → fallback) ─────────────
+  async function loadQuestions(diff) {
+    setScreen(SCREENS.LOADING)
+    let qs
+    try {
+      qs = await fetchQuestions(diff)
+    } catch {
+      qs = shuffleArray([...(ALL_QUESTIONS[diff] || [])])
+    }
+    setQuestions(qs)
+    setQIndex(0)
+    setScore(0)
+    scoreRef.current = 0
+    setScreen(SCREENS.QUIZ)
   }
 
   // ── Flow handlers ────────────────────────────────────────
-  function handleBegin() {
+  function handleBegin() { setScreen(SCREENS.NAME) }
+
+  function handleNameConfirm(name) {
+    setPlayerName(name)
     setScreen(SCREENS.HOUSE)
   }
 
@@ -78,13 +96,8 @@ export default function Home() {
   }
 
   function handleDifficultySelect(diff) {
-    const qs = shuffleArray([...(ALL_QUESTIONS[diff] || [])])
     setDifficulty(diff)
-    setQuestions(qs)
-    setQIndex(0)
-    setScore(0)
-    scoreRef.current = 0
-    setScreen(SCREENS.QUIZ)
+    loadQuestions(diff)
   }
 
   function handleAnswer(isCorrect) {
@@ -94,12 +107,10 @@ export default function Home() {
       scoreRef.current = newScore
       setScore(newScore)
     }
-
     const next = qIndex + 1
     if (next < questions.length) {
       setQIndex(next)
     } else {
-      // Game over — go to results
       setScreen(SCREENS.RESULTS)
     }
   }
@@ -109,14 +120,18 @@ export default function Home() {
     refreshLeaderboard()
   }
 
-  function handlePlayAgain() {
-    // Keep house and difficulty, re-shuffle questions
-    const qs = shuffleArray([...(ALL_QUESTIONS[difficulty] || [])])
-    setQuestions(qs)
+  function handlePlayAgain() { loadQuestions(difficulty) }
+
+  function handleNewGame() {
+    setPlayerName('')
+    setHouse(null)
+    setHouseName('')
+    setDifficulty(null)
+    setQuestions([])
     setQIndex(0)
     setScore(0)
     scoreRef.current = 0
-    setScreen(SCREENS.QUIZ)
+    setScreen(SCREENS.WELCOME)
   }
 
   function handleShowLeaderboard() {
@@ -130,8 +145,7 @@ export default function Home() {
   }
 
   function handleBackFromLeaderboard() {
-    // Return to results if we came from there (score > 0), else welcome
-    if (screen === SCREENS.LEADERBOARD && questions.length > 0 && qIndex === questions.length - 1) {
+    if (questions.length > 0 && screen === SCREENS.LEADERBOARD) {
       setScreen(SCREENS.RESULTS)
     } else {
       setScreen(SCREENS.WELCOME)
@@ -152,10 +166,17 @@ export default function Home() {
         />
       )}
 
+      {screen === SCREENS.NAME && (
+        <NameEntry
+          onConfirm={handleNameConfirm}
+          onBack={() => setScreen(SCREENS.WELCOME)}
+        />
+      )}
+
       {screen === SCREENS.HOUSE && (
         <HouseSelect
           onSelect={handleHouseSelect}
-          onBack={() => setScreen(SCREENS.WELCOME)}
+          onBack={() => setScreen(SCREENS.NAME)}
         />
       )}
 
@@ -168,9 +189,19 @@ export default function Home() {
         />
       )}
 
+      {screen === SCREENS.LOADING && (
+        <div className="screen active">
+          <div className="card" style={{ textAlign: 'center' }}>
+            <p style={{ fontSize: '2.5rem', marginBottom: '0.8rem' }}>🐍</p>
+            <h2>Summoning Questions…</h2>
+            <p className="subtitle">The Dark Lord is preparing your trial.</p>
+          </div>
+        </div>
+      )}
+
       {screen === SCREENS.QUIZ && questions.length > 0 && (
         <QuizScreen
-          key={qIndex}           /* remount per question to reset timer */
+          key={qIndex}
           questions={questions}
           questionIndex={qIndex}
           score={score}
@@ -180,6 +211,7 @@ export default function Home() {
 
       {screen === SCREENS.RESULTS && (
         <ResultsScreen
+          playerName={playerName}
           score={scoreRef.current}
           total={questions.length}
           difficulty={difficulty}
@@ -188,6 +220,7 @@ export default function Home() {
           onSave={handleSaveScore}
           onPlayAgain={handlePlayAgain}
           onLeaderboard={handleShowLeaderboard}
+          onNewGame={handleNewGame}
         />
       )}
 
